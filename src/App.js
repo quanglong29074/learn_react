@@ -1,104 +1,27 @@
-import React, { useEffect, useState } from "react";
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import AddSubjectForm from './data';
-import EditSubjectForm from "./Heading"; // Import AddSubjectForm component
+import React from 'react';
+import BlogList from './data';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/Layout";
+import Home from "./pages/Home";
+import Blogs from "./pages/Blogs";
+import EditBlog from './pages/EditBlog';
+import AddBlogForm from './pages/addBlog';
+import Login from './pages/Login'; // Import Login component
 
-const fetchSubjects = () => {
-    // Fetch data from API
-    return fetch("http://localhost:8070/api/subjects")
-        .then((response) => response.json())
-        .catch((error) => console.error(error));
-};
-
-const DataTable = () => {
-    const [data, setData] = useState([]);
-    const [editingSubject, setEditingSubject] = useState(null);
-
-    useEffect(() => {
-        fetchSubjects()
-            .then((data) => {
-                setData(data);
-            })
-            .catch((error) => console.error(error));
-    }, []);
-
-    const handleAddSubject = (newSubject) => {
-        setData([...data, newSubject]);
-    };
-
-    const deleteSubject = async (code) => {
-        try {
-            await axios.delete(`http://localhost:8070/api/subjects/${code}`);
-            setData(data.filter(subject => subject.code !== code));
-        } catch (error) {
-            console.error('Error deleting subject:', error);
-        }
-    };
-
-    const editSubject = (subject) => {
-        setEditingSubject(subject);
-    };
-
-    const updateSubject = async (updatedSubject) => {
-        try {
-            const response = await axios.put(`http://localhost:8070/api/subjects/${updatedSubject.code}`, updatedSubject);
-            const updatedData = data.map(subject => {
-                if (subject.code === updatedSubject.code) {
-                    return response.data; // Use updated data from server
-                }
-                return subject;
-            });
-            setData(updatedData);
-            setEditingSubject(null); // Clear editing state
-        } catch (error) {
-            console.error('Error updating subject:', error);
-        }
-    };
-
+export default function App() {
     return (
-        <div className="container mt-5">
-            {/* AddSubjectForm component */}
-            <AddSubjectForm onAddSubject={handleAddSubject} />
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="blogs" element={<Blogs />} />
+                    <Route path="blogs/edit/:id" element={<EditBlog />} />
+                    <Route path="add-blog" element={<AddBlogForm />} />
+                    <Route path="login" element={<Login />} />
 
-            <h2 className="mt-4 mb-4">Subjects Data</h2>
-            <table className="table table-bordered table-striped">
-                <thead className="table-dark">
-                <tr>
-                    <th scope="col">Code</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Credit</th>
-                    <th style={{
-                        width: "150px"
-                    }} scope="col">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((subject, index) => (
-                    <tr key={index}>
-                        <td>{subject.code}</td>
-                        <td>{subject.name}</td>
-                        <td>{subject.credit}</td>
-                        <td>
-                            <button className="btn btn-primary btn-sm me-2" onClick={() => editSubject(subject)}>Edit</button>
-                            <button className="btn btn-danger btn-sm" onClick={() => deleteSubject(subject.code)}>Delete</button>
-                        </td>
-                    </tr>
-                ))}
-                {data.length === 0 && (
-                    <tr>
-                        <td colSpan="4" className="text-center">No data available</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-
-            {/* EditSubjectForm component */}
-            {editingSubject && (
-                <EditSubjectForm subject={editingSubject} onUpdateSubject={updateSubject} />
-            )}
-        </div>
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
-};
-
-export default DataTable;
+}
