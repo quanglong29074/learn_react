@@ -12,8 +12,8 @@ const Login = () => {
 
         axios.post('http://localhost:3001/api/auth/login', { username, password })
             .then(response => {
-                localStorage.setItem('token', response.data.token); // Lưu token vào localStorage
-                window.location.href = '/blogs'; // Chuyển hướng đến trang đăng nhập
+                localStorage.setItem('token', response.data.token);
+                window.location.href = '/blogs';
             })
             .catch(error => {
                 console.error('There was an error logging in!', error);
@@ -22,7 +22,9 @@ const Login = () => {
 
     return (
         <div>
-            <h1>Login</h1>
+            <h1 style={{
+                textAlign:"center"
+            }}>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Username</label>

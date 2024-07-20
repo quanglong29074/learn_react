@@ -18,15 +18,9 @@ const Blogs = () => {
     const handleDelete = (id) => {
 
         if (window.confirm('Are you sure you want to delete this blog?')) {
-            const token = localStorage.getItem('token'); // Lấy token từ localStorage
-            if (!token) {
-                alert('User not logged in');
-                window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
-
-                return;
-            }
+            const token = localStorage.getItem('token');
             axios.delete(`http://localhost:3001/api/blogs/deleteBlog/${id}`, {
-                headers: { Authorization: `Bearer ${token}` } // Gửi token trong header
+                headers: { Authorization: `Bearer ${token}` }
             })
                 .then(response => {
                     setBlogs(blogs.filter(blog => blog._id !== id));
@@ -41,7 +35,6 @@ const Blogs = () => {
         <div>
             <h1>Blog List</h1>
             <Link to="/add-blog" className="btn btn-primary mb-3">Add Blog</Link>
-
             <table className="table table-bordered table-striped">
                 <thead className="table-dark">
                 <tr>

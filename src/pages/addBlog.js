@@ -11,37 +11,28 @@ const AddBlogForm = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            if (!token) {
-                alert('User not logged in');
-                window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
-                return;
-            }
             const decodedToken = jwtDecode(token);
-            const currentTime = Date.now() / 1000; // thời gian hiện tại tính bằng giây
-            if (decodedToken.exp < currentTime) {
-                alert('Token expired, please log in again');
-                return;
-            }
-            const loggedUserId = decodedToken.user_id; // Giả sử user_id có trong payload của token
+            const currentTime = Date.now() / 1000;
+            const loggedUserId = decodedToken.user_id;
             const blogData = { title, content, image, userId: loggedUserId }; // Đảm bảo userId được đưa vào request với đúng tên thuộc tính
-            console.log('Blog Data:', blogData); // Ghi log dữ liệu để gửi
+            console.log('Blog Data:', blogData);
             const response = await axios.post(
                 'http://localhost:3001/api/blogs/createBlog',
                 blogData,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Đảm bảo định dạng token đúng
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
-            console.log('Response:', response.data); // Ghi log phản hồi từ server để debug
+            console.log('Response:', response.data);
             alert('Blog added successfully!');
             // Xóa nội dung form nếu cần
             setTitle('');
             setContent('');
             setImage('');
         } catch (error) {
-            console.error('Error:', error.response.data); // Ghi log chi tiết lỗi
+            console.error('Error:', error.response.data);
             alert('Failed to add blog. Please check your input.');
         }
     };

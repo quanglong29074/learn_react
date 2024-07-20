@@ -43,7 +43,7 @@ const EditBlog = () => {
         const token = localStorage.getItem('token');
         if (!token) {
             // Xử lý khi không có token
-            window.location.href = '/login'; // Điều hướng đến trang đăng nhập
+            window.location.href = '/login';
             return;
         }
 
@@ -57,8 +57,6 @@ const EditBlog = () => {
                     }
                 }
             );
-            console.log('Blog updated successfully:', response.data);
-            // Điều hướng về trang danh sách blog sau khi cập nhật thành công
             window.location.href = '/blogs';
         } catch (error) {
             console.error('Error updating blog:', error);
@@ -100,6 +98,7 @@ const EditBlog = () => {
                         value={blog.image}
                         onChange={handleChange}
                     />
+                    <img src={blog.image} width={150} height={150} />
                 </div>
                 <button type="submit" className="btn btn-primary">Save Changes</button>
             </form>

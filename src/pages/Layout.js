@@ -49,9 +49,14 @@ const Layout = () => {
                                     <button className="nav-link" onClick={handleLogout}>Logout</button>
                                 </li>
                             ) : (
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/login">Login</Link>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/login">Login</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/register">Register</Link>
+                                    </li>
+                                </>
                             )}
                         </ul>
                         <form className="d-flex" role="search">
