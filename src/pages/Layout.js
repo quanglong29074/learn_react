@@ -1,9 +1,12 @@
 import { Outlet, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { jwtDecode } from 'jwt-decode'; // Sử dụng named import
+import { jwtDecode } from 'jwt-decode';
+import axios from "axios"; // Sử dụng named import
 
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -25,6 +28,17 @@ const Layout = () => {
         setIsLoggedIn(false);
         window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
     };
+
+    const handleSearch = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.get(`http://localhost:3001/api/blogs/search?search=${encodeURIComponent(searchQuery)}`);
+            setSearchResults(response.data);
+        } catch (error) {
+            console.error('There was an error fetching the search results!', error);
+        }
+    };
+
 
     return (
         <>
@@ -59,8 +73,10 @@ const Layout = () => {
                                 </>
                             )}
                         </ul>
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <form className="d-flex" role="search" onSubmit={handleSearch}>
+                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                                   value={searchQuery}
+                                   onChange={(e) => setSearchQuery(e.target.value)}/>
                             <button className="btn btn-outline-success" type="submit">Search</button>
                         </form>
                     </div>

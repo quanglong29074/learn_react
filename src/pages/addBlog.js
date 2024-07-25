@@ -27,10 +27,7 @@ const AddBlogForm = () => {
             );
             console.log('Response:', response.data);
             alert('Blog added successfully!');
-            // Xóa nội dung form nếu cần
-            setTitle('');
-            setContent('');
-            setImage('');
+            window.location.href = '/blogs';
         } catch (error) {
             console.error('Error:', error.response.data);
             alert('Failed to add blog. Please check your input.');
@@ -42,19 +39,19 @@ const AddBlogForm = () => {
             <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label" >Title</label>
                 <input type="text" className="form-control" id="exampleFormControlInput1"
-                       value={title} onChange={(e) => setTitle(e.target.value)}
+                       value={title} onChange={e => setTitle(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label htmlFor="exampleFormControlTextarea1" className="form-label">Content</label>
                 <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-                          value={content} onChange={(e) => setContent(e.target.value)}
+                          value={content} onChange={e => setContent(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Image</label>
                 <input type="text" className="form-control" id="exampleFormControlInput1"
-                       value={image} onChange={(e) => setImage(e.target.value)}
+                       value={image} onChange={e => setImage(e.target.value)}
                 />
             </div>
 
