@@ -16,7 +16,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
-                    <Route path="blogs" element={<ProtectedRoute element={<Blogs />} />} />
+                    <Route path="blogs" element={<Blogs/>} />
                     <Route path="blogs/edit/:id" element={<ProtectedRoute element={<EditBlog />} />} />
                     <Route path="add-blog" element={<ProtectedRoute element={<AddBlogForm />} />} />
                     <Route path="login" element={<Login />} />

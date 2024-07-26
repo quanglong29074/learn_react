@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+h1 {
+  color: red;
+}
+.custom-dropdown {
+  width: 60px; /* Set the width of the dropdown */
+  display: inline-block; /* Align dropdown in-line */
+}
+
+.text-end {
+  text-align: right; /* Align the dropdown to the right */
+}
+

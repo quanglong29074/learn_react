@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditBlog = () => {
     const { id } = useParams(); // Lấy id của blog từ URL
@@ -10,6 +10,19 @@ const EditBlog = () => {
         image: ''
 
     });
+    const navigate = useNavigate(); // Khởi tạo useNavigate để điều hướng trang
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setBlog(prevState => ({
+                ...prevState,
+                image: reader.result
+            }));
+        };
+        reader.readAsDataURL(file);
+    };
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -42,8 +55,8 @@ const EditBlog = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         if (!token) {
-            // Xử lý khi không có token
-            window.location.href = '/login';
+
+            navigate('login');
             return;
         }
 
@@ -57,7 +70,7 @@ const EditBlog = () => {
                     }
                 }
             );
-            window.location.href = '/blogs';
+            navigate('/blogs');
         } catch (error) {
             console.error('Error updating blog:', error);
         }
@@ -91,12 +104,11 @@ const EditBlog = () => {
                 <div className="mb-3">
                     <label htmlFor="image" className="form-label">Image URL</label>
                     <input
-                        type="text"
+                        type="file"
                         className="form-control"
                         id="image"
                         name="image"
-                        value={blog.image}
-                        onChange={handleChange}
+                        onChange={handleImageChange}
                     />
                     <img src={blog.image} width={150} height={150} />
                 </div>
