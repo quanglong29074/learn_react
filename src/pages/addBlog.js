@@ -44,7 +44,7 @@ const AddBlogForm = () => {
             alert('Failed to add blog. Please check your input.');
         }
     };
-
+    console.log(content)
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
